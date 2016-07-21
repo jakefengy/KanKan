@@ -4,7 +4,6 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.xmgl.kan.db.entity.UrlParams;
 import com.xmgl.kan.db.entity.Urls;
-import com.xmgl.kan.db.entity.User;
 
 import java.util.Map;
 
@@ -22,11 +21,9 @@ import de.greenrobot.dao.internal.DaoConfig;
  */
 public class DaoSession extends AbstractDaoSession {
 
-    private final DaoConfig userDaoConfig;
     private final DaoConfig urlsDaoConfig;
     private final DaoConfig urlParamsDaoConfig;
 
-    private final UserDao userDao;
     private final UrlsDao urlsDao;
     private final UrlParamsDao urlParamsDao;
 
@@ -34,32 +31,22 @@ public class DaoSession extends AbstractDaoSession {
             daoConfigMap) {
         super(db);
 
-        userDaoConfig = daoConfigMap.get(UserDao.class).clone();
-        userDaoConfig.initIdentityScope(type);
-
         urlsDaoConfig = daoConfigMap.get(UrlsDao.class).clone();
         urlsDaoConfig.initIdentityScope(type);
 
         urlParamsDaoConfig = daoConfigMap.get(UrlParamsDao.class).clone();
         urlParamsDaoConfig.initIdentityScope(type);
 
-        userDao = new UserDao(userDaoConfig, this);
         urlsDao = new UrlsDao(urlsDaoConfig, this);
         urlParamsDao = new UrlParamsDao(urlParamsDaoConfig, this);
 
-        registerDao(User.class, userDao);
         registerDao(Urls.class, urlsDao);
         registerDao(UrlParams.class, urlParamsDao);
     }
     
     public void clear() {
-        userDaoConfig.getIdentityScope().clear();
         urlsDaoConfig.getIdentityScope().clear();
         urlParamsDaoConfig.getIdentityScope().clear();
-    }
-
-    public UserDao getUserDao() {
-        return userDao;
     }
 
     public UrlsDao getUrlsDao() {

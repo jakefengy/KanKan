@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.xmgl.kan.R;
 import com.xmgl.kan.databinding.ListitemUrlBinding;
-import com.xmgl.kan.db.entity.Urls;
+import com.xmgl.kan.view.entity.Source;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +19,11 @@ import java.util.List;
 public class UrlsAdapter extends RecyclerView.Adapter<UrlsAdapter.ViewHolder> {
 
     private Context context;
-    private List<Urls> mDataSource;
+    private List<Source> mDataSource;
     private LayoutInflater inflater;
     private OnItemClickListener mItemClickListener;
 
-    public UrlsAdapter(Context ctx, List<Urls> datas) {
+    public UrlsAdapter(Context ctx, List<Source> datas) {
         this.context = ctx;
         this.mDataSource = new ArrayList<>();
         this.inflater = LayoutInflater.from(context);
@@ -60,21 +60,24 @@ public class UrlsAdapter extends RecyclerView.Adapter<UrlsAdapter.ViewHolder> {
 
         }
 
-        public void bind(Urls url) {
+        public void bind(Source url) {
             binding.setUrl(url);
             binding.btnEnable.setText(url.getUrlenable() ? "隐藏" : "显示");
+            binding.btnEdit.setEnabled(url.getUrlenable());
         }
 
         public void edit(View v) {
-            if (mItemClickListener != null) {
-                mItemClickListener.editUrl(v, mDataSource.get(getLayoutPosition()));
+            if (v.isEnabled()) {
+                if (mItemClickListener != null) {
+                    mItemClickListener.editUrl(v, mDataSource.get(getLayoutPosition()));
+                }
             }
         }
 
         public void enableSwitch(View v) {
             final int index = getLayoutPosition();
             mDataSource.get(index).setUrlenable(!mDataSource.get(index).getUrlenable());
-            binding.btnEnable.setText(mDataSource.get(index).getUrlenable() ? "隐藏" : "显示");
+            notifyItemChanged(index);
             if (mItemClickListener != null) {
                 mItemClickListener.changeEnableUrl(v, mDataSource.get(getLayoutPosition()));
             }
@@ -83,16 +86,16 @@ public class UrlsAdapter extends RecyclerView.Adapter<UrlsAdapter.ViewHolder> {
     }
 
     public interface OnItemClickListener {
-        void editUrl(View view, Urls url);
+        void editUrl(View view, Source url);
 
-        void changeEnableUrl(View view, Urls url);
+        void changeEnableUrl(View view, Source url);
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.mItemClickListener = onItemClickListener;
     }
 
-    public void updateSource(List<Urls> data) {
+    public void updateSource(List<Source> data) {
         if (data == null) {
             return;
         }
@@ -102,7 +105,7 @@ public class UrlsAdapter extends RecyclerView.Adapter<UrlsAdapter.ViewHolder> {
         notifyDataSetChanged();
     }
 
-    public void addData(List<Urls> data) {
+    public void addData(List<Source> data) {
         if (data == null) {
             return;
         }

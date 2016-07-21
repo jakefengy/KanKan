@@ -3,41 +3,47 @@
 
     <data>
 
+        <import type="java.lang.String" />
+
         <variable
             name="params"
-            type="com.xmgl.kan.db.entity.UrlParams" />
+            type="com.xmgl.kan.view.entity.Params" />
 
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:orientation="horizontal">
+        android:background="@null"
+        android:orientation="horizontal"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:minWidth="96dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
             android:text="@{params.name}" />
 
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
             <EditText
                 android:id="@+id/params_content"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_centerInParent="true"
-                android:minWidth="48dp"
-                android:text="@{params.content}" />
+                android:gravity="center_vertical"
+                android:minWidth="48dp" />
 
             <Switch
                 android:id="@+id/params_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:checked='@{params.type.equals("text")?false:true}' />
+                android:gravity="center_vertical" />
         </RelativeLayout>
     </LinearLayout>
 </layout>

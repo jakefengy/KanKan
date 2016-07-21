@@ -16,8 +16,8 @@ import de.greenrobot.dao.DaoException;
 public class UrlParams {
 
     private Long id;
-    private String userName;
-    private Long urlid;
+    /** Not-null value. */
+    private String url;
     private String name;
     private String type;
     private Boolean required;
@@ -41,10 +41,9 @@ public class UrlParams {
         this.id = id;
     }
 
-    public UrlParams(Long id, String userName, Long urlid, String name, String type, Boolean required, String rowid, String content) {
+    public UrlParams(Long id, String url, String name, String type, Boolean required, String rowid, String content) {
         this.id = id;
-        this.userName = userName;
-        this.urlid = urlid;
+        this.url = url;
         this.name = name;
         this.type = type;
         this.required = required;
@@ -66,20 +65,14 @@ public class UrlParams {
         this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+    /** Not-null value. */
+    public String getUrl() {
+        return url;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public Long getUrlid() {
-        return urlid;
-    }
-
-    public void setUrlid(Long urlid) {
-        this.urlid = urlid;
+    /** Not-null value; ensure this value is available before it is saved to the database. */
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public String getName() {
@@ -122,6 +115,7 @@ public class UrlParams {
         this.content = content;
     }
 
+    /** Convenient call for {@link AbstractDao#delete(Object)}. Entity must attached to an entity context. */
     public void delete() {
         if (myDao == null) {
             throw new DaoException("Entity is detached from DAO context");
@@ -129,6 +123,7 @@ public class UrlParams {
         myDao.delete(this);
     }
 
+    /** Convenient call for {@link AbstractDao#update(Object)}. Entity must attached to an entity context. */
     public void update() {
         if (myDao == null) {
             throw new DaoException("Entity is detached from DAO context");
@@ -136,6 +131,7 @@ public class UrlParams {
         myDao.update(this);
     }
 
+    /** Convenient call for {@link AbstractDao#refresh(Object)}. Entity must attached to an entity context. */
     public void refresh() {
         if (myDao == null) {
             throw new DaoException("Entity is detached from DAO context");

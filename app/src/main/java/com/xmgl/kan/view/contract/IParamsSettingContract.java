@@ -2,16 +2,18 @@ package com.xmgl.kan.view.contract;
 
 import com.xmgl.kan.view.entity.Source;
 
-import java.util.List;
-
-public interface IHomeContract {
+public interface IParamsSettingContract {
 
     interface View {
-        void onGetUrls(boolean success, List<Source> urls);
+        void onGetUrl(boolean success, Source url);
     }
 
     interface Presenter extends IBaseContract.IBasePresenter {
-        void getUrls();
+
+        void getUrl(String url);
+
+        void updateUrl(Source url);
+
     }
 
 }

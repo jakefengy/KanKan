@@ -5,7 +5,7 @@
 
         <variable
             name="url"
-            type="com.xmgl.kan.db.entity.Urls" />
+            type="com.xmgl.kan.view.entity.Source" />
 
         <variable
             name="click"
@@ -16,28 +16,40 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:orientation="horizontal">
+        android:background="@null"
+        android:orientation="horizontal"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="center_vertical"
             android:text="@{url.name}" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:gravity="center_vertical"
             android:text="@{url.orgname}" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:id="@+id/btn_edit"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/bg_listitem_btn"
             android:onClick="@{click.edit}"
             android:text="编辑" />
 
         <Button
             android:id="@+id/btn_enable"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/bg_listitem_btn"
             android:onClick="@{click.enableSwitch}"
             android:text="显示" />
 

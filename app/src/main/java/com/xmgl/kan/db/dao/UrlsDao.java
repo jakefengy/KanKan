@@ -15,7 +15,7 @@ import de.greenrobot.dao.internal.DaoConfig;
 /**
  * DAO for table "URLS".
 */
-public class UrlsDao extends AbstractDao<Urls, Long> {
+public class UrlsDao extends AbstractDao<Urls, String> {
 
     public static final String TABLENAME = "URLS";
 
@@ -24,14 +24,12 @@ public class UrlsDao extends AbstractDao<Urls, Long> {
      * Can be used for QueryBuilder and for referencing column names.
     */
     public static class Properties {
-        public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property Username = new Property(1, String.class, "username", false, "USERNAME");
-        public final static Property Name = new Property(2, String.class, "name", false, "NAME");
-        public final static Property Orgno = new Property(3, String.class, "orgno", false, "ORGNO");
-        public final static Property Orgname = new Property(4, String.class, "orgname", false, "ORGNAME");
-        public final static Property Url = new Property(5, String.class, "url", false, "URL");
-        public final static Property Intvalue = new Property(6, Integer.class, "intvalue", false, "INTVALUE");
-        public final static Property Urlenable = new Property(7, Boolean.class, "urlenable", false, "URLENABLE");
+        public final static Property Url = new Property(0, String.class, "url", true, "URL");
+        public final static Property Name = new Property(1, String.class, "name", false, "NAME");
+        public final static Property Orgno = new Property(2, String.class, "orgno", false, "ORGNO");
+        public final static Property Orgname = new Property(3, String.class, "orgname", false, "ORGNAME");
+        public final static Property Intvalue = new Property(4, Integer.class, "intvalue", false, "INTVALUE");
+        public final static Property Urlenable = new Property(5, Boolean.class, "urlenable", false, "URLENABLE");
     };
 
     private DaoSession daoSession;
@@ -50,14 +48,12 @@ public class UrlsDao extends AbstractDao<Urls, Long> {
     public static void createTable(SQLiteDatabase db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"URLS\" (" + //
-                "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
-                "\"USERNAME\" TEXT," + // 1: username
-                "\"NAME\" TEXT," + // 2: name
-                "\"ORGNO\" TEXT," + // 3: orgno
-                "\"ORGNAME\" TEXT," + // 4: orgname
-                "\"URL\" TEXT," + // 5: url
-                "\"INTVALUE\" INTEGER," + // 6: intvalue
-                "\"URLENABLE\" INTEGER);"); // 7: urlenable
+                "\"URL\" TEXT PRIMARY KEY NOT NULL ," + // 0: url
+                "\"NAME\" TEXT," + // 1: name
+                "\"ORGNO\" TEXT," + // 2: orgno
+                "\"ORGNAME\" TEXT," + // 3: orgname
+                "\"INTVALUE\" INTEGER," + // 4: intvalue
+                "\"URLENABLE\" INTEGER);"); // 5: urlenable
     }
 
     /** Drops the underlying database table. */
@@ -71,44 +67,34 @@ public class UrlsDao extends AbstractDao<Urls, Long> {
     protected void bindValues(SQLiteStatement stmt, Urls entity) {
         stmt.clearBindings();
  
-        Long id = entity.getId();
-        if (id != null) {
-            stmt.bindLong(1, id);
-        }
- 
-        String username = entity.getUsername();
-        if (username != null) {
-            stmt.bindString(2, username);
+        String url = entity.getUrl();
+        if (url != null) {
+            stmt.bindString(1, url);
         }
  
         String name = entity.getName();
         if (name != null) {
-            stmt.bindString(3, name);
+            stmt.bindString(2, name);
         }
  
         String orgno = entity.getOrgno();
         if (orgno != null) {
-            stmt.bindString(4, orgno);
+            stmt.bindString(3, orgno);
         }
  
         String orgname = entity.getOrgname();
         if (orgname != null) {
-            stmt.bindString(5, orgname);
-        }
- 
-        String url = entity.getUrl();
-        if (url != null) {
-            stmt.bindString(6, url);
+            stmt.bindString(4, orgname);
         }
  
         Integer intvalue = entity.getIntvalue();
         if (intvalue != null) {
-            stmt.bindLong(7, intvalue);
+            stmt.bindLong(5, intvalue);
         }
  
         Boolean urlenable = entity.getUrlenable();
         if (urlenable != null) {
-            stmt.bindLong(8, urlenable ? 1L: 0L);
+            stmt.bindLong(6, urlenable ? 1L: 0L);
         }
     }
 
@@ -120,22 +106,20 @@ public class UrlsDao extends AbstractDao<Urls, Long> {
 
     /** @inheritdoc */
     @Override
-    public Long readKey(Cursor cursor, int offset) {
-        return cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0);
+    public String readKey(Cursor cursor, int offset) {
+        return cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0);
     }    
 
     /** @inheritdoc */
     @Override
     public Urls readEntity(Cursor cursor, int offset) {
         Urls entity = new Urls( //
-            cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // username
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // name
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // orgno
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // orgname
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // url
-            cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // intvalue
-            cursor.isNull(offset + 7) ? null : cursor.getShort(offset + 7) != 0 // urlenable
+            cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // url
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // name
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // orgno
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // orgname
+            cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4), // intvalue
+            cursor.isNull(offset + 5) ? null : cursor.getShort(offset + 5) != 0 // urlenable
         );
         return entity;
     }
@@ -143,28 +127,25 @@ public class UrlsDao extends AbstractDao<Urls, Long> {
     /** @inheritdoc */
     @Override
     public void readEntity(Cursor cursor, Urls entity, int offset) {
-        entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setUsername(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
-        entity.setName(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setOrgno(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setOrgname(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setUrl(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
-        entity.setIntvalue(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
-        entity.setUrlenable(cursor.isNull(offset + 7) ? null : cursor.getShort(offset + 7) != 0);
+        entity.setUrl(cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0));
+        entity.setName(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setOrgno(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setOrgname(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setIntvalue(cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4));
+        entity.setUrlenable(cursor.isNull(offset + 5) ? null : cursor.getShort(offset + 5) != 0);
      }
     
     /** @inheritdoc */
     @Override
-    protected Long updateKeyAfterInsert(Urls entity, long rowId) {
-        entity.setId(rowId);
-        return rowId;
+    protected String updateKeyAfterInsert(Urls entity, long rowId) {
+        return entity.getUrl();
     }
     
     /** @inheritdoc */
     @Override
-    public Long getKey(Urls entity) {
+    public String getKey(Urls entity) {
         if(entity != null) {
-            return entity.getId();
+            return entity.getUrl();
         } else {
             return null;
         }

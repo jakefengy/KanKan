@@ -14,14 +14,27 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.view.Activity_Home">
+        <activity
+            android:name=".view.view.Activity_Home"
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.view.ActivityUrls"></activity>
+        <activity
+            android:name=".view.view.Activity_Url_Setting"
+            android:screenOrientation="landscape"
+            android:theme="@style/translucent" />
+        <activity
+            android:name=".view.view.Activity_Params_Setting"
+            android:screenOrientation="landscape"
+            android:theme="@style/translucent" />
+        <activity
+            android:name=".view.view.Activity_Home_Setting"
+            android:screenOrientation="landscape"
+            android:theme="@style/translucent" />
     </application>
 
 </manifest>

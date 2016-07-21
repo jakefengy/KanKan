@@ -1,6 +1,7 @@
 package com.xmgl.kan.db.entity;
 
 import com.xmgl.kan.db.dao.DaoSession;
+import com.xmgl.kan.db.dao.UrlParamsDao;
 import com.xmgl.kan.db.dao.UrlsDao;
 
 import java.util.List;
@@ -17,70 +18,52 @@ import de.greenrobot.dao.DaoException;
  */
 public class Urls {
 
-    private Long id;
-    private String username;
+    private String url;
     private String name;
     private String orgno;
     private String orgname;
-    private String url;
     private Integer intvalue;
-    private Boolean urlenable;
+    private Boolean urlenable = false;
 
-    /**
-     * Used to resolve relations
-     */
+    /** Used to resolve relations */
     private transient DaoSession daoSession;
 
-    /**
-     * Used for active entity operations.
-     */
+    /** Used for active entity operations. */
     private transient UrlsDao myDao;
 
+    private List<UrlParams> paramlist;
 
     // KEEP FIELDS - put your custom fields here
-    private List<UrlParams> paramlist;
     // KEEP FIELDS END
 
     public Urls() {
     }
 
-    public Urls(Long id) {
-        this.id = id;
+    public Urls(String url) {
+        this.url = url;
     }
 
-    public Urls(Long id, String username, String name, String orgno, String orgname, String url, Integer intvalue, Boolean urlenable) {
-        this.id = id;
-        this.username = username;
+    public Urls(String url, String name, String orgno, String orgname, Integer intvalue, Boolean urlenable) {
+        this.url = url;
         this.name = name;
         this.orgno = orgno;
         this.orgname = orgname;
-        this.url = url;
         this.intvalue = intvalue;
         this.urlenable = urlenable;
     }
 
-    /**
-     * called by internal mechanisms, do not call yourself.
-     */
+    /** called by internal mechanisms, do not call yourself. */
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getUrlsDao() : null;
     }
 
-    public Long getId() {
-        return id;
+    public String getUrl() {
+        return url;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public String getName() {
@@ -107,14 +90,6 @@ public class Urls {
         this.orgname = orgname;
     }
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
     public Integer getIntvalue() {
         return intvalue;
     }
@@ -131,34 +106,49 @@ public class Urls {
         this.urlenable = urlenable;
     }
 
+    /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */
     public List<UrlParams> getParamlist() {
+        if (paramlist == null) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            UrlParamsDao targetDao = daoSession.getUrlParamsDao();
+            List<UrlParams> paramlistNew = targetDao._queryUrls_Paramlist(url);
+            synchronized (this) {
+                if(paramlist == null) {
+                    paramlist = paramlistNew;
+                }
+            }
+        }
         return paramlist;
     }
 
-    public void setParamlist(List<UrlParams> paramlist) {
-        this.paramlist = paramlist;
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    public synchronized void resetParamlist() {
+        paramlist = null;
     }
 
+    /** Convenient call for {@link AbstractDao#delete(Object)}. Entity must attached to an entity context. */
     public void delete() {
         if (myDao == null) {
             throw new DaoException("Entity is detached from DAO context");
-        }
+        }    
         myDao.delete(this);
     }
 
-
+    /** Convenient call for {@link AbstractDao#update(Object)}. Entity must attached to an entity context. */
     public void update() {
         if (myDao == null) {
             throw new DaoException("Entity is detached from DAO context");
-        }
+        }    
         myDao.update(this);
     }
 
-
+    /** Convenient call for {@link AbstractDao#refresh(Object)}. Entity must attached to an entity context. */
     public void refresh() {
         if (myDao == null) {
             throw new DaoException("Entity is detached from DAO context");
-        }
+        }    
         myDao.refresh(this);
     }
 
