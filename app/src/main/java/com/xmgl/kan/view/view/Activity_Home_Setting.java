@@ -28,6 +28,15 @@ public class Activity_Home_Setting extends RxAppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home_setting);
+        binding.btnSettingParams.setFocusable(true);
+        binding.btnSettingParams.requestFocus();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        binding.btnSettingParams.setFocusable(true);
+        binding.btnSettingParams.requestFocus();
     }
 
     public void paramsSetting(View view) {

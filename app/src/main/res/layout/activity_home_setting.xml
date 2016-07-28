@@ -25,6 +25,7 @@
                 android:id="@+id/btn_setting_params"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="4dp"
                 android:background="@drawable/bg_listitem_btn"
                 android:clickable="true"
                 android:gravity="center"
