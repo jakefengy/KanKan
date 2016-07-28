@@ -29,7 +29,10 @@
                 android:clickable="true"
                 android:gravity="center"
                 android:onClick="paramsSetting"
-                android:text="参数配置" />
+                android:text="参数配置">
+
+                <requestFocus />
+            </Button>
 
             <Button
                 android:id="@+id/btn_setting_source"

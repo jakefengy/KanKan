@@ -35,7 +35,10 @@
                 android:id="@+id/refresh_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/common_fifth" />
+                android:background="@color/common_fifth">
+
+                <requestFocus />
+            </android.support.v7.widget.RecyclerView>
         </LinearLayout>
 
         <View
